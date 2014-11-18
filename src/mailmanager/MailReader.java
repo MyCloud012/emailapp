@@ -19,6 +19,8 @@ import javax.mail.Store;
  *
  * @author Vector
  */
+
+//This class is not currently in use, but it would be used so don't mind having it.
 public class MailReader {
 
     public static Vector<String> data = new Vector<String>();

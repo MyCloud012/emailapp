@@ -18,6 +18,7 @@ import javax.mail.MessagingException;
 public class Inbox extends javax.swing.JFrame {
 
     public static final Map<Integer, Vector> emails = new HashMap<Integer, Vector>();
+    
 
     /**
      * Creates new form Inbox
@@ -29,21 +30,33 @@ public class Inbox extends javax.swing.JFrame {
      4. Subject
 
      */
+    
+    //getCount returns the total number of emails in Inbox. Emails are read from newer to old.
+    //So if count = 10, email with id of 10 is the newest email in the inbox.
     public Inbox() throws MessagingException {
         initComponents();
 
         int count = ReadEmail.getCount();
+        
+        int next = count-1;
+        
+        //Email obj = new Email()
+        
         emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender1.setText((emails.get(count).get(1).toString()));
-        --count;
+        emails.put(next, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, next));
         
-        emails.put(count -1, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender2.setText((emails.get(count -1).get(1).toString()));
-        --count;
+        System.out.println("MAP element of count: " + emails.get(count).get(1).toString() + "count == " + count);
+        System.out.println("MAP element of next: " + emails.get(next).get(1).toString() + "next == " + next);
         
-                emails.put(count - 2, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender3.setText((emails.get(count -2).get(1).toString()));
-        --count;
+        sender1.setText((emails.get(count).get(2).toString()));
+        sender2.setText((emails.get(next).get(2).toString()));
+        
+        //emails.put(count -1, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
+       // sender2.setText(ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count-1).toString());
+       // --count;
+        
+        //emails.put(count - 2, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
+        //sender3.setText((emails.get(count -2).get(1).toString()));
         //System.out.println("COUNT: " + count);
         /*
         emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));

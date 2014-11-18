@@ -21,11 +21,11 @@ public class Main {
     public static void main(String[] args) throws MessagingException {
         //SendMail obj = new SendMail();
 
-        ReadEmail obj = new ReadEmail();
-                obj.readMail(ReadEmail.username, ReadEmail.password);
+        //ReadEmail obj = new ReadEmail();
+        //obj.readMail(ReadEmail.username, ReadEmail.password);
         
-        /*Inbox object = new Inbox();
-        object.setVisible(true);*/
+        Inbox object = new Inbox();
+        object.setVisible(true);
 
 
 

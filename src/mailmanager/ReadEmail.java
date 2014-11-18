@@ -42,25 +42,7 @@ public class ReadEmail {
                 Message msg = inbox.getMessage(count);
                 System.out.println("Content Type: " + msg.getContentType());
                 System.out.println("getContent Returns: " + msg.getContent());
-                //data = obj.getText(msg);
                 data.addElement(Misc.getText(msg));
-
-                /*Object content = msg.getContent();
-                 //if (content instanceof Multipart) {
-                 Multipart mp = (Multipart) content;
-                 for (int i = 0; i < mp.getCount(); i++) {
-                 BodyPart bp = mp.getBodyPart(i);
-                 if (Pattern
-                 .compile(Pattern.quote("text/html"),
-                 Pattern.CASE_INSENSITIVE)
-                 .matcher(bp.getContentType()).find()) {
-                 // found html part
-                 System.out.println((String) bp.getContent());
-                 } else {
-                 // some other bodypart...
-                 }
-                 }
-                 }*/
 
                 Address[] in = msg.getFrom();
                 for (Address address : in) {
@@ -71,12 +53,6 @@ public class ReadEmail {
                     System.out.println("SUBJECT:" + msg.getSubject());
                     data.addElement(msg.getSubject());
                 }
-
-
-                //Multipart mp = (Multipart) msg.getContent();
-                //BodyPart bp = mp.getBodyPart(0);
-
-                //System.out.println("CONTENT:" + bp.getContent());
                 count--;
             }
         } catch (Exception mex) {
