@@ -58,7 +58,7 @@ public class Email {
         return subject;
     }
 
-    public static Email getMailById(int id) {
+    /*public static Email getMailById(int id) {
         Email obj = null;
         Properties props = new Properties();
         props.setProperty("mail.store.protocol", "imaps");
@@ -93,5 +93,5 @@ public class Email {
         }
 
         return obj;
-    }
+    }*/
 }

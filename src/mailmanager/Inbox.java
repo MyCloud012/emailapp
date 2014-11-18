@@ -36,9 +36,9 @@ public class Inbox extends javax.swing.JFrame {
     public Inbox() throws MessagingException {
         initComponents();
 
-        int count = ReadEmail.getCount();
+        //int count = ReadEmail.getCount();
         
-        int next = count-1;
+        /*int next = count-1;
         
         //Email obj = new Email()
         

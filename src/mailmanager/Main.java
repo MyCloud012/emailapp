@@ -24,8 +24,12 @@ public class Main {
         //ReadEmail obj = new ReadEmail();
         //obj.readMail(ReadEmail.username, ReadEmail.password);
         
-        Inbox object = new Inbox();
-        object.setVisible(true);
+        //Inbox object = new Inbox();
+        //object.setVisible(true);
+        
+        Config obj = new Config("public.github@gmail.com", "publicpassword");
+        SendMail object = new SendMail(); //
+        object.Send(obj, "mycloud012@outlook.com", "Hello World", "Welcome ToastKid");
 
 
 

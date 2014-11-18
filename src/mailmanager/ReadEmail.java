@@ -8,78 +8,90 @@ package mailmanager;
  *
  * @author Vector
  */
+import java.io.IOException;
 import java.util.*;
 import javax.mail.*;
 
 
 /*Vector data
-1. Email Content.
-2. From
-3. Sent Date
-4. Subject
+ 1. Email Content.
+ 2. From
+ 3. Sent Date
+ 4. Subject
 
-*/
+ */
 public class ReadEmail {
 
-    public static final String username = "public.github@gmail.com";
-    public static final String password = "publicpassword";
-    
-    public static Vector<String> data = new Vector<String>();
-    public static Vector<String> emailData = new Vector<String>();
+    ReadEmail() {
+    }
+    private Session mailSession = null;
 
-    public static Vector<String> readMail(final String username, final String password) {
+    public void initialiseSession(final Config config) throws NoSuchProviderException, MessagingException {
         Properties props = new Properties();
         props.setProperty("mail.store.protocol", "imaps");
-        try {
-            Session session = Session.getInstance(props, null);
-            Store store = session.getStore();
-            store.connect("imap.gmail.com", username, password);
-            Folder inbox = store.getFolder("INBOX");
-            inbox.open(Folder.READ_ONLY);
-            int count = inbox.getMessageCount();
-            System.out.println("Total Messages Count: " + count);
-            while (count != 0) {
-                Message msg = inbox.getMessage(count);
-                System.out.println("Content Type: " + msg.getContentType());
-                System.out.println("getContent Returns: " + msg.getContent());
-                data.addElement(Misc.getText(msg));
+        mailSession = Session.getInstance(props, null);
 
-                Address[] in = msg.getFrom();
-                for (Address address : in) {
-                    System.out.println("FROM:" + address.toString());
-                    data.addElement(address.toString());
-                    System.out.println("SENT DATE:" + msg.getSentDate());
-                    data.addElement(msg.getSentDate().toString());
-                    System.out.println("SUBJECT:" + msg.getSubject());
-                    data.addElement(msg.getSubject());
-                }
-                count--;
+
+    }
+    ;
+    
+    public Vector<String> data = new Vector<String>();
+    public Vector<String> emailData = new Vector<String>();
+
+    public Vector<String> readMail(Config config) throws NoSuchProviderException, MessagingException, IOException {
+
+        if (mailSession == null) {
+            initialiseSession(config);
+        }
+
+        Store store = mailSession.getStore();
+        store.connect("imap.gmail.com", config.getUserName(), config.getPassword());
+        Folder inbox = store.getFolder("INBOX");
+        inbox.open(Folder.READ_ONLY);
+
+        int count = inbox.getMessageCount();
+        System.out.println("Total Messages Count: " + count);
+        while (count != 0) {
+            Message msg = inbox.getMessage(count);
+            System.out.println("Content Type: " + msg.getContentType());
+            System.out.println("getContent Returns: " + msg.getContent());
+            data.addElement(Misc.getText(msg));
+
+            Address[] in = msg.getFrom();
+            for (Address address : in) {
+                System.out.println("FROM:" + address.toString());
+                data.addElement(address.toString());
+                System.out.println("SENT DATE:" + msg.getSentDate());
+                data.addElement(msg.getSentDate().toString());
+                System.out.println("SUBJECT:" + msg.getSubject());
+                data.addElement(msg.getSubject());
             }
-        } catch (Exception mex) {
-            mex.printStackTrace();
+            count--;
         }
         return data;
     }
-
-    public static int getCount() throws MessagingException {
-        Properties props = new Properties();
-        props.setProperty("mail.store.protocol", "imaps");
-        Session session = Session.getInstance(props, null);
-        Store store = session.getStore();
-        store.connect("imap.gmail.com", username, password);
+public int getCount(Config config) throws MessagingException {
+        
+            if (mailSession == null) {
+            initialiseSession(config);
+        }
+        Store store = mailSession.getStore();
+        store.connect("imap.gmail.com", config.getUserName(), config.getPassword());
         Folder inbox = store.getFolder("INBOX");
         inbox.open(Folder.READ_ONLY);
         int count = inbox.getMessageCount();
         return count;
     }
 
-    public static Vector<String> readEmailById(final String username, final String password, int emailId) {
-        Properties props = new Properties();
-        props.setProperty("mail.store.protocol", "imaps");
+    public Vector<String> readEmailById(Config config, int emailId) {
         try {
-            Session session = Session.getInstance(props, null);
-            Store store = session.getStore();
-            store.connect("imap.gmail.com", username, password);
+            
+                  if (mailSession == null) {
+            initialiseSession(config);
+        }
+            
+            Store store = mailSession.getStore();
+            store.connect("imap.gmail.com", config.getUserName(), config.getPassword());
             Folder inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
 
@@ -97,9 +109,6 @@ public class ReadEmail {
                 System.out.println("SUBJECT:" + msg.getSubject());
                 emailData.addElement(msg.getSubject());
             }
-
-
-
         } catch (Exception mex) {
             mex.printStackTrace();
         }
