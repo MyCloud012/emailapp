@@ -64,9 +64,9 @@ public class SendMail {
                     }
                 }.init(config));
 
-    }
-
-    ;
+    };
+    
+    //
 
     public void Send(String to, String subject, String content) {
 
