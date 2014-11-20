@@ -32,7 +32,7 @@ public class SendMail {
     }
     private Session mailSession = null;
 
-    public void initialiseSession() {
+    private void initialiseSession() {
         final Config config = Config.getInstance();
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -42,13 +42,19 @@ public class SendMail {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-        mailSession = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-
-                        return new PasswordAuthentication(config.getUserName(), config.getPassword());
-                    }
-                });
+       mailSession = Session.getDefaultInstance(props,
+    new javax.mail.Authenticator() {
+    private Config anonConfig;
+    public PasswordAuthentication getPasswordAuthentication()
+    {
+        return new PasswordAuthentication( anonConfig.getUserName(), anonConfig.getPassword());
+    }
+    private javax.mail.Authenticator init(Config iconfig )
+    {
+        anonConfig = iconfig;
+        return this;
+    }
+                }.init(config));
 
     }
 
@@ -56,12 +62,11 @@ public class SendMail {
 
     public void Send(String to, String subject, String content) {
 
-
         try {
             if (mailSession == null) {
                 initialiseSession();
             }
-
+            
             Message message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress(config.getUserName()));
             message.setRecipients(Message.RecipientType.TO,
