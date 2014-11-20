@@ -26,14 +26,14 @@ import javax.mail.internet.MimeMessage;
 
 public class SendMail {
 
-
-    SendMail() 
-    {
+    SendMail() {
     }
     private Session mailSession = null;
+    private String userName;
 
     private void initialiseSession() {
         final Config config = Config.getInstance();
+        userName = config.username;
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -42,18 +42,18 @@ public class SendMail {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-       mailSession = Session.getDefaultInstance(props,
-    new javax.mail.Authenticator() {
-    private Config anonConfig;
-    public PasswordAuthentication getPasswordAuthentication()
-    {
-        return new PasswordAuthentication( anonConfig.getUserName(), anonConfig.getPassword());
-    }
-    private javax.mail.Authenticator init(Config iconfig )
-    {
-        anonConfig = iconfig;
-        return this;
-    }
+        mailSession = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    private Config anonConfig;
+
+                    public PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(anonConfig.getUserName(), anonConfig.getPassword());
+                    }
+
+                    private javax.mail.Authenticator init(Config iconfig) {
+                        anonConfig = iconfig;
+                        return this;
+                    }
                 }.init(config));
 
     }
@@ -66,9 +66,9 @@ public class SendMail {
             if (mailSession == null) {
                 initialiseSession();
             }
-            
+
             Message message = new MimeMessage(mailSession);
-            message.setFrom(new InternetAddress(config.getUserName()));
+            message.setFrom(new InternetAddress(userName));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
             message.setSubject(subject);
