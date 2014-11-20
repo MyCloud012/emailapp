@@ -33,7 +33,7 @@ public class SendMail {
     private Session mailSession = null;
 
     public void initialiseSession() {
-        Config config = Config.getInstance();
+        final Config config = Config.getInstance();
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
