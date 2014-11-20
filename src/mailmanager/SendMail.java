@@ -26,9 +26,11 @@ import javax.mail.internet.MimeMessage;
 
 public class SendMail {
 
+    private Config config;
+
     SendMail() 
     {
-        
+        this.config = Config.getInstance();
     }
     private Session mailSession = null;
 
@@ -49,9 +51,11 @@ public class SendMail {
                     }
                 });
 
-    };
+    }
 
-    public void Send(final Config config, String to, String subject, String content) {
+    ;
+
+    public void Send(String to, String subject, String content) {
 
 
         try {
