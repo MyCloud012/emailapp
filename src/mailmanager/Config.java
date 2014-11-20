@@ -10,14 +10,13 @@ package mailmanager;
  */
 public class Config {
     
-    private String username;
-    private String password;
+    public String username;
+    public String password;
     
-    Config(String username, String password)
+    private Config()
     {
-        this.username = username;
-        this.password = password;
     }
+    
     public String getUserName()
     {
         return username;
@@ -26,6 +25,24 @@ public class Config {
     public String getPassword()
     {
         return password;
+    }
+    
+    public void setUsernameAndPassword(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+    }
+    
+    private static Config instance = null;
+
+     /*
+      * Config instance
+      */
+    public static Config getInstance() {
+        if(instance == null) {
+            instance = new Config();
+        }
+        return instance;
     }
     
 }

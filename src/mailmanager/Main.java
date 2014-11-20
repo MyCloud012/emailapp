@@ -24,13 +24,17 @@ public class Main {
         //ReadEmail obj = new ReadEmail();
         //obj.readMail(ReadEmail.username, ReadEmail.password);
         
-        //Inbox object = new Inbox();
-        //object.setVisible(true);
+         
+        Config config = Config.getInstance();
+        config.setUsernameAndPassword("public.github@gmail.com", "publicpassword");
         
-        Config obj = new Config("public.github@gmail.com", "publicpassword");
-        SendMail object = new SendMail(); //
-        object.Send(obj, "mycloud012@outlook.com", "Hello World", "Welcome ToastKid");
-
+        Inbox object = new Inbox();
+        object.setVisible(true);
+       
+        
+        /*SendMail object = new SendMail(); //
+        object.Send(config, "mycloud012@outlook.com", "Hello World", "Welcome ToastKid");
+*/
 
 
     }

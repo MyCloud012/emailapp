@@ -33,80 +33,28 @@ public class Inbox extends javax.swing.JFrame {
     
     //getCount returns the total number of emails in Inbox. Emails are read from newer to old.
     //So if count = 10, email with id of 10 is the newest email in the inbox.
+    
     public Inbox() throws MessagingException {
+               String text = "Inbox";
+        jLabel1.setText("<html><div style=\"text-align: center;\">" + text + "</html>");
         initComponents();
 
-        //int count = ReadEmail.getCount();
+ 
         
-        /*int next = count-1;
+        ReadEmail readObj = new ReadEmail();
+        Config conf = Config.getInstance();
+        int count = readObj.getCount();
         
-        //Email obj = new Email()
+       
+        Email obj = null;
+        obj =  readObj.readEmailById(conf, count);
         
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        emails.put(next, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, next));
         
-        System.out.println("MAP element of count: " + emails.get(count).get(1).toString() + "count == " + count);
-        System.out.println("MAP element of next: " + emails.get(next).get(1).toString() + "next == " + next);
+        Email obj2 = null;
+        obj2 =  readObj.readEmailById(conf, count-1);
         
-        sender1.setText((emails.get(count).get(2).toString()));
-        sender2.setText((emails.get(next).get(2).toString()));
-        
-        //emails.put(count -1, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-       // sender2.setText(ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count-1).toString());
-       // --count;
-        
-        //emails.put(count - 2, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        //sender3.setText((emails.get(count -2).get(1).toString()));
-        //System.out.println("COUNT: " + count);
-        /*
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        ////System.out.println("Data #1: "+ emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count)));
-        sender1.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        ////System.out.println("Data #2: "+ emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count)));
-        sender2.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender3.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender4.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender5.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender6.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender7.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender8.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender9.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-        emails.put(count, ReadEmail.readEmailById(ReadEmail.username, ReadEmail.password, count));
-        sender10.setText((emails.get(count).get(1).toString()));
-        --count;
-        //System.out.println("COUNT: " + count);
-
-
-       // //System.out.println("Swag: " + (emails.get(count).get(1).toString()));
-
-*/
-
+        sender1.setText(obj.getSender());
+        sender2.setText(obj2.getSender());
 
     }
 
@@ -181,6 +129,7 @@ public class Inbox extends javax.swing.JFrame {
         sender9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Inbox");
@@ -384,24 +333,21 @@ public class Inbox extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(206, 206, 206)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(160, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 904, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                .addGap(23, 23, 23))
         );
 
         pack();

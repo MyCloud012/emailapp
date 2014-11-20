@@ -22,11 +22,13 @@ import javax.mail.*;
  */
 public class ReadEmail {
 
+    private Config config;
     ReadEmail() {
+        this.config = Config.getInstance();
     }
     private Session mailSession = null;
 
-    public void initialiseSession(final Config config) throws NoSuchProviderException, MessagingException {
+    public void initialiseSession() throws NoSuchProviderException, MessagingException {
         Properties props = new Properties();
         props.setProperty("mail.store.protocol", "imaps");
         mailSession = Session.getInstance(props, null);
@@ -38,10 +40,10 @@ public class ReadEmail {
     public Vector<String> data = new Vector<String>();
     public Vector<String> emailData = new Vector<String>();
 
-    public Vector<String> readMail(Config config) throws NoSuchProviderException, MessagingException, IOException {
+    public Vector<String> readMail() throws NoSuchProviderException, MessagingException, IOException {
 
         if (mailSession == null) {
-            initialiseSession(config);
+            initialiseSession();
         }
 
         Store store = mailSession.getStore();
@@ -70,10 +72,11 @@ public class ReadEmail {
         }
         return data;
     }
-public int getCount(Config config) throws MessagingException {
-        
-            if (mailSession == null) {
-            initialiseSession(config);
+
+    public int getCount() throws MessagingException {
+
+        if (mailSession == null) {
+            initialiseSession();
         }
         Store store = mailSession.getStore();
         store.connect("imap.gmail.com", config.getUserName(), config.getPassword());
@@ -83,13 +86,14 @@ public int getCount(Config config) throws MessagingException {
         return count;
     }
 
-    public Vector<String> readEmailById(Config config, int emailId) {
+    public Email readEmailById(Config config, int emailId) {
+        Email obj = null;
         try {
-            
-                  if (mailSession == null) {
-            initialiseSession(config);
-        }
-            
+
+            if (mailSession == null) {
+                initialiseSession();
+            }
+
             Store store = mailSession.getStore();
             store.connect("imap.gmail.com", config.getUserName(), config.getPassword());
             Folder inbox = store.getFolder("INBOX");
@@ -108,10 +112,12 @@ public int getCount(Config config) throws MessagingException {
                 emailData.addElement(msg.getSentDate().toString());
                 System.out.println("SUBJECT:" + msg.getSubject());
                 emailData.addElement(msg.getSubject());
+
+                obj = new Email(emailId, Misc.getText(msg), address.toString(), msg.getSentDate(), msg.getSubject());
             }
         } catch (Exception mex) {
             mex.printStackTrace();
         }
-        return emailData;
+        return obj;
     }
 }
