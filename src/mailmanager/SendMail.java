@@ -31,9 +31,17 @@ public class SendMail {
     private Session mailSession = null;
     private String userName;
 
+    //We intilaizeSession to send an email, establish connections to the server etc.
+    //This function is called only one time in the send method, because of two things
+    //1. We store the session in an outter private member mailSession.
+    //2. We check that variable value everytime we call the send method, to avoid calling the function again.
     private void initialiseSession() {
+        //This line makes a call to the same instance we firstly created at the main. 
+        //We only limited to use one instance as we don't need more.
+        //We could have created another object of Config everytime we need thee uesrname, password.
+        //But this ineffiecient way to do that in our case.
         final Config config = Config.getInstance();
-        userName = config.username;
+        userName = config.username; //We later will parse this to the Send method.
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
