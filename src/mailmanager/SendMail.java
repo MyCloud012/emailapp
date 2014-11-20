@@ -26,15 +26,14 @@ import javax.mail.internet.MimeMessage;
 
 public class SendMail {
 
-    private Config config;
 
     SendMail() 
     {
-        this.config = Config.getInstance();
     }
     private Session mailSession = null;
 
-    public void initialiseSession(final Config config) {
+    public void initialiseSession() {
+        Config config = Config.getInstance();
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -60,7 +59,7 @@ public class SendMail {
 
         try {
             if (mailSession == null) {
-                initialiseSession(config);
+                initialiseSession();
             }
 
             Message message = new MimeMessage(mailSession);
