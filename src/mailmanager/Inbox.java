@@ -4,6 +4,7 @@
  */
 package mailmanager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -35,28 +36,78 @@ public class Inbox extends javax.swing.JFrame {
     //So if count = 10, email with id of 10 is the newest email in the inbox.
     
     public Inbox() throws MessagingException {
-               String text = "Inbox";
-        jLabel1.setText("<html><div style=\"text-align: center;\">" + text + "</html>");
+     
+        
+        
         initComponents();
+                  String text = "Inbox";
+        jLabel1.setText("<html><div style=\"text-align: center;\">" + text + "</html>");
 
  
         
-        ReadEmail readObj = new ReadEmail();
+        /*ReadEmail readObj = new ReadEmail();
         Config conf = Config.getInstance();
         int count = readObj.getCount();
         
        
+       
         Email obj = null;
-        obj =  readObj.readEmailById(conf, count);
+        obj =  readObj.readEmailById(count);
         
         
         Email obj2 = null;
-        obj2 =  readObj.readEmailById(conf, count-1);
+        obj2 =  readObj.readEmailById(count-1);
+        */
         
-        sender1.setText(obj.getSender());
-        sender2.setText(obj2.getSender());
+        ReadEmail readObj = new ReadEmail();
+        Config conf = Config.getInstance();
+        int startPoint = readObj.getCount();
+         ArrayList<Email> emails = readEmails(startPoint);
+        
+         
+         String[] strings = getSenders(startPoint);
+       
+         jList1.setListData(strings);
+
+         
 
     }
+     public ArrayList<Email> readEmails(int startPoint) throws MessagingException
+        {
+            ReadEmail readObj = new ReadEmail();
+            startPoint = readObj.getCount();
+            Email[] mailObjects = new Email[startPoint];
+            ArrayList<Email> emails = new ArrayList<Email>();
+            
+            for(int i=0; i<mailObjects.length; i++)
+            {
+                mailObjects[i] = readObj.readEmailById(startPoint);
+                emails.add(mailObjects[i]);
+                        startPoint--;
+            }
+            return emails;
+        }
+     
+     public String [] getSenders(int startPoint) throws MessagingException
+     {
+         ReadEmail readObj = new ReadEmail();
+         int ConststartPoint = readObj.getCount();
+         String [] m = new String[ConststartPoint];
+         
+         startPoint = ConststartPoint;
+         
+          for(int i=0; i<startPoint; i++)
+            {
+                m[i] = readObj.readEmailById(startPoint).getSender().toString();
+                System.out.println("Added " + readObj.readEmailById(startPoint).getSender().toString());
+                        startPoint--;
+            }
+          
+          return m;
+         
+     }
+        
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,7 +142,6 @@ public class Inbox extends javax.swing.JFrame {
         jSeparator17 = new javax.swing.JSeparator();
         jSeparator19 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
-        sender10 = new javax.swing.JLabel();
         subject10 = new javax.swing.JLabel();
         subject1 = new javax.swing.JLabel();
         subject2 = new javax.swing.JLabel();
@@ -118,15 +168,8 @@ public class Inbox extends javax.swing.JFrame {
         jSeparator27 = new javax.swing.JSeparator();
         jSeparator28 = new javax.swing.JSeparator();
         jSeparator29 = new javax.swing.JSeparator();
-        sender3 = new javax.swing.JLabel();
-        sender1 = new javax.swing.JLabel();
-        sender2 = new javax.swing.JLabel();
-        sender4 = new javax.swing.JLabel();
-        sender5 = new javax.swing.JLabel();
-        sender6 = new javax.swing.JLabel();
-        sender7 = new javax.swing.JLabel();
-        sender8 = new javax.swing.JLabel();
-        sender9 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -172,7 +215,7 @@ public class Inbox extends javax.swing.JFrame {
         jLayeredPane1.add(jSeparator10, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jSeparator11.setBounds(0, 160, 480, 0);
         jLayeredPane1.add(jSeparator11, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jSeparator12.setBounds(0, 130, 680, 10);
+        jSeparator12.setBounds(-10, 130, 680, 10);
         jLayeredPane1.add(jSeparator12, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jSeparator14.setBounds(0, 340, 680, 10);
         jLayeredPane1.add(jSeparator14, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -186,11 +229,6 @@ public class Inbox extends javax.swing.JFrame {
         jButton1.setText("Next >>");
         jButton1.setBounds(30, 360, 610, 23);
         jLayeredPane1.add(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        sender10.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender10.setText("jLabel5");
-        sender10.setBounds(30, 320, 200, 14);
-        jLayeredPane1.add(sender10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         subject10.setText("jLabel15");
         subject10.setBounds(250, 320, 170, 14);
@@ -284,50 +322,15 @@ public class Inbox extends javax.swing.JFrame {
         jSeparator29.setBounds(0, 310, 680, 10);
         jLayeredPane1.add(jSeparator29, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        sender3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender3.setText("jLabel5");
-        sender3.setBounds(30, 110, 200, 14);
-        jLayeredPane1.add(sender3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
 
-        sender1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender1.setText("jLabel5");
-        sender1.setBounds(30, 50, 200, 14);
-        jLayeredPane1.add(sender1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        sender2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender2.setText("jLabel5");
-        sender2.setBounds(30, 80, 200, 14);
-        jLayeredPane1.add(sender2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        sender4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender4.setText("jLabel5");
-        sender4.setBounds(30, 140, 200, 14);
-        jLayeredPane1.add(sender4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        sender5.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender5.setText("jLabel5");
-        sender5.setBounds(30, 170, 200, 14);
-        jLayeredPane1.add(sender5, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        sender6.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender6.setText("jLabel5");
-        sender6.setBounds(30, 200, 200, 14);
-        jLayeredPane1.add(sender6, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        sender7.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender7.setText("jLabel5");
-        sender7.setBounds(30, 230, 200, 14);
-        jLayeredPane1.add(sender7, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        sender8.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender8.setText("jLabel5");
-        sender8.setBounds(30, 260, 200, 14);
-        jLayeredPane1.add(sender8, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        sender9.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        sender9.setText("jLabel5");
-        sender9.setBounds(30, 290, 200, 14);
-        jLayeredPane1.add(sender9, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jScrollPane1.setBounds(25, 40, 200, 300);
+        jLayeredPane1.add(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -409,6 +412,8 @@ public class Inbox extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
@@ -432,16 +437,6 @@ public class Inbox extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JLabel sender1;
-    private javax.swing.JLabel sender10;
-    private javax.swing.JLabel sender2;
-    private javax.swing.JLabel sender3;
-    private javax.swing.JLabel sender4;
-    private javax.swing.JLabel sender5;
-    private javax.swing.JLabel sender6;
-    private javax.swing.JLabel sender7;
-    private javax.swing.JLabel sender8;
-    private javax.swing.JLabel sender9;
     private javax.swing.JLabel subject1;
     private javax.swing.JLabel subject10;
     private javax.swing.JLabel subject2;
