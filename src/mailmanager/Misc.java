@@ -38,13 +38,13 @@ public class Misc {
                 if (bp.isMimeType("text/plain")) {
                     if (text == null)
                         text = getText(bp);
-                    System.out.println("multipart/alternative getText -> " + text);
+                    //System.out.println("multipart/alternative getText -> " + text);
                     continue;
                 } else if (bp.isMimeType("text/html")) {
                     String s = getText(bp);
                     if (s != null)
                         return s;
-                    System.out.println("text/html getText -> " + s);
+                    //System.out.println("text/html getText -> " + s);
                 } else {
                     return getText(bp);
                 }
@@ -56,7 +56,7 @@ public class Misc {
                 String s = getText(mp.getBodyPart(i));
                 if (s != null)
                     return s;
-                System.out.println("multipart/* getText -> " + s);
+                //System.out.println("multipart/* getText -> " + s);
                 
             }
         }

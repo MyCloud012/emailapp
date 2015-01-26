@@ -86,7 +86,7 @@ public class ReadEmail {
         return count;
     }
 
-    public Email readEmailById(Config config, int emailId) {
+    public Email readEmailById(int emailId) {
         Email obj = null;
         try {
 
@@ -100,17 +100,18 @@ public class ReadEmail {
             inbox.open(Folder.READ_ONLY);
 
             Message msg = inbox.getMessage(emailId);
-            System.out.println("Content Type: " + msg.getContentType());
-            System.out.println("getContent Returns: " + msg.getContent());
+            System.out.println("Loading Emails... Pease wait.");
+            //System.out.println("Content Type: " + msg.getContentType());
+            //System.out.println("getContent Returns: " + msg.getContent());
             emailData.addElement(Misc.getText(msg));
 
             Address[] in = msg.getFrom();
             for (Address address : in) {
-                System.out.println("FROM:" + address.toString());
+                //System.out.println("FROM:" + address.toString());
                 emailData.addElement(address.toString());
-                System.out.println("SENT DATE:" + msg.getSentDate());
+                //System.out.println("SENT DATE:" + msg.getSentDate());
                 emailData.addElement(msg.getSentDate().toString());
-                System.out.println("SUBJECT:" + msg.getSubject());
+                //System.out.println("SUBJECT:" + msg.getSubject());
                 emailData.addElement(msg.getSubject());
 
                 obj = new Email(emailId, Misc.getText(msg), address.toString(), msg.getSentDate(), msg.getSubject());
@@ -120,4 +121,45 @@ public class ReadEmail {
         }
         return obj;
     }
+    
+    
+    
+    
+       public ArrayList<Email> readEmails(int startPoint) throws MessagingException
+        {
+            ReadEmail readObj = new ReadEmail();
+            startPoint = readObj.getCount();
+            Email[] mailObjects = new Email[startPoint];
+            ArrayList<Email> emails = new ArrayList<Email>();
+            
+            for(int i=0; i<mailObjects.length; i++)
+            {
+                mailObjects[i] = readObj.readEmailById(startPoint);
+                emails.add(mailObjects[i]);
+                        startPoint--;
+            }
+            return emails;
+        }
+       
+       
+          public String [] getSenders(int startPoint) throws MessagingException
+     {
+         ReadEmail readObj = new ReadEmail();
+         int ConststartPoint = readObj.getCount();
+         String [] m = new String[ConststartPoint];
+         
+         startPoint = ConststartPoint;
+         
+          for(int i=0; i<startPoint; i++)
+            {
+                m[i] = readObj.readEmailById(startPoint).getSender().toString();
+                System.out.println("Added " + readObj.readEmailById(startPoint).getSender().toString());
+                        startPoint--;
+            }
+          
+          return m;
+         
+     }
+    
+    
 }

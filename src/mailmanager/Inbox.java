@@ -35,77 +35,34 @@ public class Inbox extends javax.swing.JFrame {
     //getCount returns the total number of emails in Inbox. Emails are read from newer to old.
     //So if count = 10, email with id of 10 is the newest email in the inbox.
     
+     public static int selectedEmail = 0;
     public Inbox() throws MessagingException {
      
-        
+       
         
         initComponents();
                   String text = "Inbox";
         jLabel1.setText("<html><div style=\"text-align: center;\">" + text + "</html>");
 
  
-        
-        /*ReadEmail readObj = new ReadEmail();
-        Config conf = Config.getInstance();
-        int count = readObj.getCount();
-        
-       
-       
-        Email obj = null;
-        obj =  readObj.readEmailById(count);
-        
-        
-        Email obj2 = null;
-        obj2 =  readObj.readEmailById(count-1);
-        */
+    
         
         ReadEmail readObj = new ReadEmail();
         Config conf = Config.getInstance();
         int startPoint = readObj.getCount();
-         ArrayList<Email> emails = readEmails(startPoint);
+         ArrayList<Email> emails = readObj.readEmails(startPoint);
         
          
-         String[] strings = getSenders(startPoint);
+         String[] strings = readObj.getSenders(startPoint);
        
          jList1.setListData(strings);
+
 
          
 
     }
-     public ArrayList<Email> readEmails(int startPoint) throws MessagingException
-        {
-            ReadEmail readObj = new ReadEmail();
-            startPoint = readObj.getCount();
-            Email[] mailObjects = new Email[startPoint];
-            ArrayList<Email> emails = new ArrayList<Email>();
-            
-            for(int i=0; i<mailObjects.length; i++)
-            {
-                mailObjects[i] = readObj.readEmailById(startPoint);
-                emails.add(mailObjects[i]);
-                        startPoint--;
-            }
-            return emails;
-        }
      
-     public String [] getSenders(int startPoint) throws MessagingException
-     {
-         ReadEmail readObj = new ReadEmail();
-         int ConststartPoint = readObj.getCount();
-         String [] m = new String[ConststartPoint];
-         
-         startPoint = ConststartPoint;
-         
-          for(int i=0; i<startPoint; i++)
-            {
-                m[i] = readObj.readEmailById(startPoint).getSender().toString();
-                System.out.println("Added " + readObj.readEmailById(startPoint).getSender().toString());
-                        startPoint--;
-            }
-          
-          return m;
-         
-     }
+  
         
      
 
@@ -197,6 +154,12 @@ public class Inbox extends javax.swing.JFrame {
         jLayeredPane1.add(filler1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jSeparator1.setBounds(0, 160, 480, 0);
         jLayeredPane1.add(jSeparator1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jSeparator2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jSeparator2MouseClicked(evt);
+            }
+        });
         jSeparator2.setBounds(0, 40, 680, 10);
         jLayeredPane1.add(jSeparator2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jSeparator3.setBounds(0, 70, 680, 10);
@@ -327,6 +290,11 @@ public class Inbox extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jList1);
 
         jScrollPane1.setBounds(25, 40, 200, 300);
@@ -355,6 +323,19 @@ public class Inbox extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jSeparator2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSeparator2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jSeparator2MouseClicked
+
+    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+        // TODO add your handling code here:
+                 selectedEmail = jList1.getSelectedIndex();
+                 this.setVisible(false);
+                 ViewMessage obj = new ViewMessage();
+                 System.out.println("Createed ViewMessage Object.");
+                 obj.setVisible(true);
+    }//GEN-LAST:event_jList1MouseClicked
 
     /**
      * @param args the command line arguments

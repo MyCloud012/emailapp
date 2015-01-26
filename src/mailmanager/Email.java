@@ -5,12 +5,6 @@
 package mailmanager;
 
 import java.util.Date;
-import java.util.Properties;
-import javax.mail.Address;
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Store;
 
 /**
  *
@@ -25,6 +19,15 @@ public class Email {
         this.sentDate = sentDate;
         this.subject = subject;
     }
+    
+     Email (Email c)
+     {
+         emailId = c.getEmailId();
+         message = c.getMessage();
+         from = c.getSender();
+         sentDate = c.getSendDate();
+         subject = c.getSubject();
+     }
     /*
      * 1.Email ID.
      * 2. Email Content.
@@ -56,6 +59,31 @@ public class Email {
 
     public String getSubject() {
         return subject;
+    }
+    
+    public void setEmailId(int emailId_)
+    {
+        emailId_ = emailId;
+    }
+    
+    public void setMessage(String message_)
+    {
+        message_ = message;
+    }
+    
+    public void setSender(String sender_)
+    {
+        sender_ = from;
+    }
+    
+    public void setDate(Date sentDate_)
+    {
+        //sentDate= sentDate_;
+    }
+    
+    public void setSubject (String subject_)
+    {
+        subject_ = subject;
     }
 
     /*public static Email getMailById(int id) {

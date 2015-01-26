@@ -5,7 +5,9 @@
 package mailmanager;
 
 import java.awt.Font;
-import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 
 /**
  *
@@ -16,17 +18,21 @@ public class ViewMessage extends javax.swing.JFrame {
     /**
      * Creates new form ViewMessage
      */
-    public static ReadEmail obj = new ReadEmail();
     //public static int sub = (obj.emailId*2) -1;
     
-    public ViewMessage() {
-        initComponents();
+    
+     public void showEmail()
+    {
+          ReadEmail obj = new ReadEmail();
         
-        ReadEmail obj = new ReadEmail();
-        /*
-        Vector<String> data = obj.readMail("xerazx@gmail.com", "grassland123");
+        //copy consturctor
+        Email emailObj = new Email(obj.readEmailById(Inbox.selectedEmail+1));
+        System.out.println("Email emailObj = new Email(obj.readEmailById(Inbox.selectedEmail));");
+        emailObj.setDate(emailObj.getSendDate());
+        System.out.println("emailObj.setDate(emailObj.getSendDate());");
+        System.out.println("SENT DATE: " + emailObj.getSendDate());
         
-        content.setText(data.get(obj.emailId));
+        content.setText(emailObj.getMessage());
         content.setFont(new Font("Serif", Font.ITALIC, 16));
         content.setLineWrap(true);
         content.setWrapStyleWord(true);
@@ -35,11 +41,18 @@ public class ViewMessage extends javax.swing.JFrame {
         
         
         
-        subject.setText((obj.emailId*2)-1);
-        from.setText(data.get(1));
-        date.setText(data.get(2));
-    */
+        subject.setText(emailObj.getSubject());
+        from.setText(emailObj.getSender());
+        date.setText(emailObj.getSendDate().toString());
     }
+    
+    public ViewMessage() {
+        initComponents();
+        showEmail();
+   
+    }
+    
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,6 +74,7 @@ public class ViewMessage extends javax.swing.JFrame {
         from = new javax.swing.JLabel();
         date = new javax.swing.JLabel();
         next = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,6 +107,13 @@ public class ViewMessage extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Back <<");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,7 +142,9 @@ public class ViewMessage extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                        .addComponent(next)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(59, 59, 59))))
         );
         layout.setVerticalGroup(
@@ -130,10 +153,11 @@ public class ViewMessage extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel5)
-                    .addComponent(subject, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(subject, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel5)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -144,11 +168,14 @@ public class ViewMessage extends javax.swing.JFrame {
                     .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(next)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(24, 24, 24))))
         );
 
         pack();
@@ -156,8 +183,20 @@ public class ViewMessage extends javax.swing.JFrame {
 
     private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
         // TODO add your handling code here:
-        ReadEmail obj = new ReadEmail();
+        //ViewMessage();
     }//GEN-LAST:event_nextActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+        Inbox obj = null;
+        try {
+            obj = new Inbox();
+        } catch (MessagingException ex) {
+            Logger.getLogger(ViewMessage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        obj.setVisible(true);
+        obj.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -197,6 +236,7 @@ public class ViewMessage extends javax.swing.JFrame {
     private javax.swing.JTextArea content;
     private javax.swing.JLabel date;
     private javax.swing.JLabel from;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
